@@ -13,17 +13,19 @@ type field struct {
 }
 
 func ctxToMap(ctx context.Context) (m map[string]interface{}) {
-	keys := getKeys(ctx)
-	m = make(map[string]interface{}, len(keys)+4)
-
-	for _, key := range keys {
-		if key != Group {
-			m[key] = ctx.Value(key)
-		}
-	}
-
 	if ctx != nil {
+		keys := getKeys(ctx) // 获取context中的key
+		m = make(map[string]interface{}, len(keys)+4)
+		// 将context中的内容拷贝到map
+		for _, key := range keys {
+			if key != Group {
+				m[key] = ctx.Value(key)
+			}
+		}
+		// 获取分组名
 		m[Group] = getCtxGroup(ctx)
+	} else {
+		m = make(map[string]interface{}, 4)
 	}
 
 	// 打印调用者
