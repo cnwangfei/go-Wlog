@@ -41,7 +41,7 @@ func FileWithLineNum(projectFolder string) string {
 			strings.Contains(frame.File, projectFolder) &&
 			!strings.Contains(frame.File, "go-wlog") {
 			path := string(strconv.AppendInt(append([]byte(frame.File), ':'), int64(frame.Line), 10))
-			return rmoveSensitivePaths(path, projectFolder)
+			return RemoveSensitiveInfo(path, projectFolder)
 		}
 	}
 
@@ -82,9 +82,12 @@ func IsErrorLogCaller() bool {
 	return false
 }
 
-// rmoveSensitivePaths 去除敏感路径
+// RemoveSensitiveInfo 去除敏感信息
 // projectFolder 项目文件夹名称，用来去除敏感路径
-func rmoveSensitivePaths(path, projectFolder string) string {
+func RemoveSensitiveInfo(str, projectFolder string) string {
 	re := regexp.MustCompile(`.*?` + projectFolder)
-	return re.ReplaceAllString(path, projectFolder)
+	str = re.ReplaceAllString(str, "***")
+	re = regexp.MustCompile(`.*?src`)
+	str = re.ReplaceAllString(str, "GoSdk")
+	return str
 }

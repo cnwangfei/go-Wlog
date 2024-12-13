@@ -26,7 +26,7 @@ func TestLog(t *testing.T) {
 		t.Fatal(err)
 		return
 	}
-	writer := io.MultiWriter(os.Stdout, file)
+	writer := io.MultiWriter(file, os.Stdout)
 	log.SetOutput(writer)
 	// 异常日志
 	errorFile, err := rotatelogs.New(path+"/error_%Y%m%d%H%M%S.log",
@@ -65,7 +65,7 @@ func TestLogContext(t *testing.T) {
 		t.Fatal(err)
 		return
 	}
-	writer := io.MultiWriter(os.Stdout, file)
+	writer := io.MultiWriter(file, os.Stdout)
 	log.SetOutput(writer)
 	// 异常日志
 	errorFile, err := rotatelogs.New(path+"/error_%Y%m%d%H%M%S.log",
