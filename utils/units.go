@@ -89,5 +89,7 @@ func RemoveSensitiveInfo(str, projectFolder string) string {
 	str = re.ReplaceAllString(str, "***")
 	re = regexp.MustCompile(`.*?src`)
 	str = re.ReplaceAllString(str, "GoSdk")
+	re = regexp.MustCompile(`.*?mod`)
+	str = re.ReplaceAllString(str, "GoMod")
 	return str
 }
